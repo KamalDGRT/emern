@@ -25,9 +25,9 @@ exports.getAllProducts = async (req, res) => {
 // Update product - only for Admin route
 exports.updateProduct = async (req, res, next) => {
   // we are using let instead of const because we want to change the values
-  console.log(req.params);
   let product = await Product.findById(req.params.id);
 
+  // Checking for the product's existence
   if (!product) {
     return res.status(404).json({
       success: false,
@@ -35,6 +35,7 @@ exports.updateProduct = async (req, res, next) => {
     });
   }
 
+  // if product exists, updating it
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -45,5 +46,27 @@ exports.updateProduct = async (req, res, next) => {
   res.status(200).json({
     success: true,
     product,
+  });
+};
+
+// Delete product
+exports.deleteProduct = async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  // Checking for the product's existence
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product Not Found",
+    });
+  }
+
+  // if product exists, deleting it
+  await product.remove();
+
+  // Response
+  res.status(200).json({
+    success: true,
+    message: "Product Deleted Sucessfully",
   });
 };
