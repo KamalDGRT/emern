@@ -22,6 +22,26 @@ exports.getAllProducts = async (req, res) => {
   });
 };
 
+// Get a single product detail
+exports.getProductDetails = async (req, res, next) => {
+  // Searching for the product
+  const product = await Product.findById(req.params.id);
+
+  // Checking for the product's existence
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product Not Found",
+    });
+  }
+
+  // Response
+  res.status(200).json({
+    success: true,
+    product,
+  });
+};
+
 // Update product - only for Admin route
 exports.updateProduct = async (req, res, next) => {
   // we are using let instead of const because we want to change the values
