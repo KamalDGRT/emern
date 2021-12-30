@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const ErrorHandler = require("../utils/errorHandler");
 
 // Create product - only for Admin route
 exports.createProduct = async (req, res, next) => {
@@ -29,10 +30,7 @@ exports.getProductDetails = async (req, res, next) => {
 
   // Checking for the product's existence
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product Not Found",
-    });
+    return next(new ErrorHandler("Product Not Found", 400));
   }
 
   // Response
@@ -49,10 +47,7 @@ exports.updateProduct = async (req, res, next) => {
 
   // Checking for the product's existence
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product Not Found",
-    });
+    return next(new ErrorHandler("Product not Found", 404));
   }
 
   // if product exists, updating it
@@ -75,10 +70,7 @@ exports.deleteProduct = async (req, res, next) => {
 
   // Checking for the product's existence
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product Not Found",
-    });
+    return next(new ErrorHandler("Product not Found", 404));
   }
 
   // if product exists, deleting it
