@@ -1,8 +1,9 @@
 const Product = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 // Create product - only for Admin route
-exports.createProduct = async (req, res, next) => {
+exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.create(req.body);
 
   // Response
@@ -10,10 +11,10 @@ exports.createProduct = async (req, res, next) => {
     success: true,
     product,
   });
-};
+});
 
 // Get all products
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = catchAsyncErrors(async (req, res) => {
   const products = await Product.find();
 
   // Response object
@@ -21,10 +22,10 @@ exports.getAllProducts = async (req, res) => {
     success: true,
     products,
   });
-};
+});
 
 // Get a single product detail
-exports.getProductDetails = async (req, res, next) => {
+exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
   // Searching for the product
   const product = await Product.findById(req.params.id);
 
@@ -38,10 +39,10 @@ exports.getProductDetails = async (req, res, next) => {
     success: true,
     product,
   });
-};
+});
 
 // Update product - only for Admin route
-exports.updateProduct = async (req, res, next) => {
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   // we are using let instead of const because we want to change the values
   let product = await Product.findById(req.params.id);
 
@@ -62,10 +63,10 @@ exports.updateProduct = async (req, res, next) => {
     success: true,
     product,
   });
-};
+});
 
 // Delete product
-exports.deleteProduct = async (req, res, next) => {
+exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   // Checking for the product's existence
@@ -81,4 +82,4 @@ exports.deleteProduct = async (req, res, next) => {
     success: true,
     message: "Product Deleted Sucessfully",
   });
-};
+});
