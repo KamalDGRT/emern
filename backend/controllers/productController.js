@@ -15,7 +15,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get all products
-exports.getAllProducts = catchAsyncErrors(async (req, res) => {
+exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
   const resultPerPage = 8;
   const productsCount = await Product.countDocuments();
 
@@ -23,7 +23,9 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
     .search()
     .filter();
 
-  let products = await apiFeature.query;
+  // Latest version of mongoose does not support re-executing the same query
+  // That is why clone() is used
+  let products = await apiFeature.query.clone();
   let filteredProductsCount = products.length;
   apiFeature.pagination(resultPerPage);
   products = await apiFeature.query;
