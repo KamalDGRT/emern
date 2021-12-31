@@ -5,6 +5,8 @@ const ApiFeatures = require("../utils/apiFeatures");
 
 // Create product - only for Admin route
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
+  req.body.user = req.user.id;
+
   const product = await Product.create(req.body);
 
   // Response
