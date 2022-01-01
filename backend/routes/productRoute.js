@@ -14,13 +14,13 @@ const router = express.Router();
 router.route("/products").get(getAllProducts);
 
 router
-  .route("/product/new")
+  .route("/admin/product/new")
   .post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
 
-router.route("/product/info/:id").get(getProductDetails);
+router.route("/admin/product/info/:id").get(getProductDetails);
 
 router
-  .route("/product/update/:id")
+  .route("/admin/product/update/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct);
 
 router
